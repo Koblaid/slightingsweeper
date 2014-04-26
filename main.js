@@ -3,11 +3,11 @@
 function Level(levelText){
     return {
         size: Math.sqrt(levelText.length),
-        
+
         isMine: function(x, y){
             return levelText[this.size*y + x] === '1';
         },
-        
+
         forEachAdjoiningCell: function(x, y, handler){
             for(var step_y=-1;step_y<=1;step_y++){
                 var target_y = y + step_y;
@@ -53,7 +53,7 @@ function Field(level){
             }
             return text;
         },
-        
+
         toTableBody: function(){
             var tbody = '';
             for(var y=0;y<level.size;y++){
@@ -66,12 +66,12 @@ function Field(level){
             }
             return tbody;
         },
-        
+
         uncover: function(x, y){
             if (field[y][x] === FLAG_CHAR || field[y][x] === MINE_CHAR){
                 return;
             }
-            
+
             var value;
             if(level.isMine(x, y)){
                 value = MINE_CHAR;
@@ -86,7 +86,7 @@ function Field(level){
             field[y][x] = value;
             return value;
         },
-        
+
         uncoverAll: function(){
             for(var y=0;y<level.size;y++){
                 for(var x=0;x<level.size;x++){
@@ -94,7 +94,7 @@ function Field(level){
                 }
             }
         },
-        
+
         uncoverAdjoiningZeros: function(x, y){
             var me = this;
             var zeros = [[x, y]];
@@ -176,7 +176,7 @@ function rightClickedCell(el, field){
 function drawTable(field){
     var table = document.getElementById("game");
     table.innerHTML = field.toTableBody();
-    var cells = table.getElementsByTagName("td"); 
+    var cells = table.getElementsByTagName("td");
     for (var i = 0; i < cells.length; i++) {
         cells[i].addEventListener('click', function(){leftClickedCell(this, field);}, false);
         cells[i].oncontextmenu = function(){
@@ -199,14 +199,14 @@ function generateLevel(sideSize, mineCount){
     for(var i=0; i<sideSize*sideSize;i++){
         levelText += levelArray[i] === 1 ? '1' : '0'
     }
-    
+
     return Level(levelText);
 }
 
 function startGame(){
     var sideSize = 10;
     var mineCount = 10;
-    var level = generateLevel(sideSize, mineCount);    
+    var level = generateLevel(sideSize, mineCount);
     var field = Field(level);
     //field.uncoverAll();
     setMessage("Do you think you're ready for this?");
