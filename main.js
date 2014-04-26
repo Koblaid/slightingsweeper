@@ -60,7 +60,7 @@ function Field(level){
                 tbody += '<tr>';
                 for(var x=0;x<level.size;x++){
                     var value = field[y][x];
-                    var cls = value === EMPTY_CELL_CHAR ? 'bg-grey' : 'bg-white';
+                    var cls = value === EMPTY_CELL_CHAR || value === FLAG_CHAR ? 'bg-grey' : 'bg-white';
                     value = value === 0 || value === EMPTY_CELL_CHAR ? '' : value;
                     if (value === 1){
                         cls += ' fg-lightblue';
@@ -243,6 +243,5 @@ startGame();
  * TODO
  *  * show all when won
  *  * mark mine red when dead
- *  * grey background for flags
  *  * let the player chose the size
  */
