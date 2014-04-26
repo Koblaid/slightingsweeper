@@ -1,0 +1,63 @@
+body{
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#container{
+    width: 500px;
+    margin-left: auto ;
+    margin-right: auto ;
+}
+
+h1 {
+    font-family: sans-serif;
+    font-weight: normal;
+}
+
+table {
+    background-color: silver;
+}
+td {
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    cursor: default;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+
+td.bg-grey {
+    background-color: grey;
+}
+
+td.bg-white {
+    background-color: white;
+}
+
+td.fg-lightblue {
+    color: #0000ff;
+}
+
+td.fg-green {
+    color: #007b00;
+}
+
+td.fg-red {
+    color: #ff0000;
+}
+
+td.fg-darkblue {
+    color: #00007b;
+}
+
+td.fg-darkred {
+    color: #903c3c;
+}
+
+td.skull {
+    font-weight: normal;
+}
