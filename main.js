@@ -1,4 +1,6 @@
-
+EMPTY_CELL_CHAR = 'E';
+FLAG_CHAR = '\u2690';
+MINE_CHAR = '\u2620';
 
 function Level(levelText){
     return {
@@ -26,13 +28,8 @@ function Level(levelText){
     };
 }
 
-EMPTY_CELL_CHAR = 'E';
-FLAG_CHAR = '\u2690';
-MINE_CHAR = '\u2620';
-
 function Field(level){
     var field = Array(4);
-    var isDead = false;
     for(var y=0;y<level.size;y++){
         var row = Array(4);
         for(var x=0;x<level.size;x++){
@@ -60,8 +57,18 @@ function Field(level){
                 tbody += '<tr>';
                 for(var x=0;x<level.size;x++){
                     var value = field[y][x];
-                    var cls = value === EMPTY_CELL_CHAR || value === FLAG_CHAR ? 'bg-grey' : 'bg-white';
-                    value = value === 0 || value === EMPTY_CELL_CHAR ? '' : value;
+
+                    var cls;
+                    if (value === EMPTY_CELL_CHAR || value === FLAG_CHAR){
+                        cls = 'bg-grey';
+                    } else {
+                        cls = 'bg-white';
+                    }
+
+                    if (value === 0 || value === EMPTY_CELL_CHAR){
+                        value = '';
+                    }
+
                     if (value === 1){
                         cls += ' fg-lightblue';
                     } else if (value === 2){
@@ -76,7 +83,7 @@ function Field(level){
                     if (value === MINE_CHAR){
                         cls += ' skull';
                     }
-                    var fg = field[y][x] === EMPTY_CELL_CHAR ? 'silver' : 'white';
+
                     tbody += '<td class="'+cls+'" data-x="'+x+'" data-y="'+y+'">' + value + '</td>';
                 }
                 tbody += '</tr>';
@@ -152,17 +159,18 @@ function Field(level){
     };
 }
 
-var isDead = false;
+var hasLost = false;
 var hasWon = false;
+
 function leftClickedCell(el, field){
-    if (isDead || hasWon){
+    if (hasLost || hasWon){
         return;
     }
     var x = parseInt(el.getAttribute('data-x'));
     var y = parseInt(el.getAttribute('data-y'));
     var value = field.uncover(x, y);
     if (value === MINE_CHAR){
-        isDead = true;
+        hasLost = true;
         setMessage("You've lost, sucker!");
         document.getElementById("newgamebtn").style.display = 'inline';
     } else if (value === 0){
@@ -196,7 +204,9 @@ function drawTable(field){
     table.innerHTML = field.toTableBody();
     var cells = table.getElementsByTagName("td");
     for (var i = 0; i < cells.length; i++) {
-        cells[i].addEventListener('click', function(){leftClickedCell(this, field);}, false);
+        cells[i].addEventListener('click', function(){
+            leftClickedCell(this, field);
+        }, false);
         cells[i].oncontextmenu = function(){
             rightClickedCell(this, field);
             return false;
@@ -230,7 +240,7 @@ function startGame(size, mineCount){
 
     setMessage("Do you think you're ready for this?");
     drawTable(field);
-    isDead = false;
+    hasLost = false;
     hasWon = false;
 }
 
@@ -243,7 +253,3 @@ function switchToNewGame(){
     document.getElementById("startgame").style.display = 'inline';
     document.getElementById("playboard").style.display = 'none';
 }
-/*
- * TODO
- *  * show all when won
- */
