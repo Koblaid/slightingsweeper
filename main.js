@@ -143,7 +143,6 @@ function Field(level){
             for(var y=0;y<level.size;y++){
                 for(var x=0;x<level.size;x++){
                     if(field[y][x]===EMPTY_CELL_CHAR && !level.isMine(x, y)){
-                        console.log(x, y);
                         return false;
                     }
                 }
@@ -242,5 +241,8 @@ startGame();
 
 /*
  * TODO
- *  * show all when dead
+ *  * show all when won
+ *  * mark mine red when dead
+ *  * grey background for flags
+ *  * let the player chose the size
  */
