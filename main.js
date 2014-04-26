@@ -242,6 +242,5 @@ startGame();
 /*
  * TODO
  *  * show all when won
- *  * mark mine red when dead
  *  * let the player chose the size
  */
