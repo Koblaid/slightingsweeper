@@ -2,8 +2,20 @@
 <html>
 <head>
     <style>
+
+        #container{
+            width: 500px;
+            margin-left: auto ;
+            margin-right: auto ;
+        }
+
+        h1 {
+            font-family: sans-serif;
+            font-weight: normal;
+        }
+
         table {
-            border: 1px solid black;
+            background-color: silver;
         }
         td {
             width: 20px;
@@ -14,8 +26,8 @@
             font-weight: bold;
         }
 
-        td.bg-silver {
-            background-color: silver;
+        td.bg-grey {
+            background-color: grey;
         }
 
         td.bg-white {
@@ -49,10 +61,12 @@
 </head>
 
 <body>
-    <h1>&#x2620; Minesweeper &#x2620;</h1>
-    <table id="game"></table>
-    <p id="message"></p>
-    <button onclick="startGame()">Reset</button>
+    <div id="container">
+        <h1>&#x2620; Minesweeper &#x2620;</h1>
+        <table id="game"></table>
+        <p id="message"></p>
+        <button onclick="startGame()">Reset</button>
+    </div>
     <script src="main.js"></script>
 </body>
 

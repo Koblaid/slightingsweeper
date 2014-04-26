@@ -60,7 +60,7 @@ function Field(level){
                 tbody += '<tr>';
                 for(var x=0;x<level.size;x++){
                     var value = field[y][x];
-                    var cls = value === '' ? 'bg-silver' : 'bg-white';
+                    var cls = value === '' ? 'bg-grey' : 'bg-white';
                     value = value === 0 ? '' : value;
                     if (value === 1){
                         cls += ' fg-lightblue';
