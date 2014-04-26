@@ -164,6 +164,7 @@ function leftClickedCell(el, field){
     if (value === MINE_CHAR){
         isDead = true;
         setMessage("You've lost, sucker!");
+        document.getElementById("newgamebtn").style.display = 'inline';
     } else if (value === 0){
         setMessage("Yeehaa");
         field.uncoverAdjoiningZeros(x, y);
@@ -173,6 +174,7 @@ function leftClickedCell(el, field){
     if(field.hasWon()){
         hasWon = true;
         setMessage("You've won, lucker!");
+        document.getElementById("newgamebtn").style.display = 'inline';
     }
     drawTable(field);
 }
@@ -219,12 +221,13 @@ function generateLevel(sideSize, mineCount){
     return Level(levelText);
 }
 
-function startGame(){
-    var sideSize = 10;
-    var mineCount = 10;
-    var level = generateLevel(sideSize, mineCount);
+function startGame(size, mineCount){
+    var level = generateLevel(size, mineCount);
     var field = Field(level);
     //field.uncoverAll();
+    document.getElementById("startgame").style.display = 'none';
+    document.getElementById("playboard").style.display = 'inline';
+
     setMessage("Do you think you're ready for this?");
     drawTable(field);
     isDead = false;
@@ -236,11 +239,11 @@ function setMessage(text){
     p.innerHTML = '"' + text + '"';
 }
 
-startGame();
-
-
+function switchToNewGame(){
+    document.getElementById("startgame").style.display = 'inline';
+    document.getElementById("playboard").style.display = 'none';
+}
 /*
  * TODO
  *  * show all when won
- *  * let the player chose the size
  */

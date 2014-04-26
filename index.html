@@ -8,9 +8,16 @@
 <body>
     <div id="container">
         <h1>&#x2620; Minesweeper &#x2620;</h1>
-        <table id="game"></table>
-        <p id="message"></p>
-        <button onclick="startGame()">Reset</button>
+            <div id="startgame">
+            <button onclick="startGame(10, 10)">Noob</button>
+            <button onclick="startGame(15, 30)">Noob</button>
+            <button onclick="startGame(20, 100)">Insane</button>
+        </div>
+        <div id="playboard" style="display: none">
+            <table id="game"></table>
+            <p id="message"></p>
+            <button id="newgamebtn" style="display: none" onclick="switchToNewGame()">I'm ready for more humiliation</button>
+        </div>
     </div>
     <script src="main.js"></script>
 </body>
