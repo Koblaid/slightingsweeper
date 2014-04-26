@@ -1,3 +1,5 @@
+
+
 function Level(levelText){
     return {
         size: Math.sqrt(levelText.length),
@@ -6,8 +8,7 @@ function Level(levelText){
             return levelText[this.size*y + x] === '1';
         },
         
-        getAdjoiningMinesCount: function(x, y){
-            var count = 0;
+        forEachAdjoiningCell: function(x, y, handler){
             for(var step_y=-1;step_y<=1;step_y++){
                 var target_y = y + step_y;
                 if(target_y < 0 || target_y >= this.size){
@@ -18,12 +19,9 @@ function Level(levelText){
                     if(target_x < 0 || target_x >= this.size){
                         continue;
                     }
-                    if (this.isMine(target_x, target_y)){
-                        count += 1;
-                    }
+                    handler(target_x, target_y);
                 }
             }
-            return count;
         },
     };
 }
@@ -61,7 +59,8 @@ function Field(level){
             for(var y=0;y<level.size;y++){
                 tbody += '<tr>';
                 for(var x=0;x<level.size;x++){
-                    tbody += '<td data-x="'+x+'" data-y="'+y+'">' + field[y][x] + '</td>';
+                    var value = field[y][x] === 0 ? '' : field[y][x];
+                    tbody += '<td data-x="'+x+'" data-y="'+y+'">' + value + '</td>';
                 }
                 tbody += '</tr>';
             }
@@ -77,7 +76,12 @@ function Field(level){
             if(level.isMine(x, y)){
                 value = MINE_CHAR;
             } else {
-                value = level.getAdjoiningMinesCount(x, y);                
+                value = 0;
+                level.forEachAdjoiningCell(x, y, function(x1, y1){
+                if (level.isMine(x1, y1)){
+                    value += 1;
+                }
+            });
             }
             field[y][x] = value;
             return value;
@@ -91,6 +95,23 @@ function Field(level){
             }
         },
         
+        uncoverAdjoiningZeros: function(x, y){
+            var me = this;
+            var zeros = [[x, y]];
+            while(zeros.length > 0){
+                var pos = zeros.pop();
+                level.forEachAdjoiningCell(pos[0], pos[1], function(x1, y1){
+                    if(field[y1][x1] !== EMPTY_CELL_CHAR){
+                        return;
+                    }
+                    var count = me.uncover(x1, y1);
+                    if (count === 0){
+                        zeros.push([x1, y1]);
+                    }
+                });
+            }
+        },
+
         toggleFlag: function(x, y){
             if (field[y][x] === EMPTY_CELL_CHAR){
                 field[y][x] = FLAG_CHAR;
@@ -111,6 +132,8 @@ function leftClickedCell(el, field){
     var value = field.uncover(x, y);
     if (value === MINE_CHAR){
         isDead = true;
+    } else if (value === 0){
+        field.uncoverAdjoiningZeros(x, y);
     }
     drawTable(field);
 }
@@ -157,6 +180,7 @@ function startGame(){
     var mineCount = 10;
     var level = generateLevel(sideSize, mineCount);    
     var field = Field(level);
+    //field.uncoverAll();
     drawTable(field);
     isDead = false;
 }
@@ -168,6 +192,5 @@ startGame();
  * TODO
  *  * winning
  *  * grey background for TDs
- *  * automatically uncover all zeroes
  *  * show all when dead
  */
