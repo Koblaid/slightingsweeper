@@ -115,16 +115,31 @@ function Field(level){
         toggleFlag: function(x, y){
             if (field[y][x] === EMPTY_CELL_CHAR){
                 field[y][x] = FLAG_CHAR;
+                return true;
             } else if (field[y][x] === FLAG_CHAR){
                 field[y][x] = EMPTY_CELL_CHAR;
+                return false;
             }
+        },
+
+        hasWon: function(){
+            for(var y=0;y<level.size;y++){
+                for(var x=0;x<level.size;x++){
+                    if(field[y][x]===EMPTY_CELL_CHAR && !level.isMine(x, y)){
+                        console.log(x, y);
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
     };
 }
 
 var isDead = false;
+var hasWon = false;
 function leftClickedCell(el, field){
-    if (isDead){
+    if (isDead || hasWon){
         return;
     }
     var x = parseInt(el.getAttribute('data-x'));
@@ -132,8 +147,16 @@ function leftClickedCell(el, field){
     var value = field.uncover(x, y);
     if (value === MINE_CHAR){
         isDead = true;
+        setMessage("You've lost, sucker!");
     } else if (value === 0){
+        setMessage("Yeehaa");
         field.uncoverAdjoiningZeros(x, y);
+    } else {
+        setMessage("Phew");
+    }
+    if(field.hasWon()){
+        hasWon = true;
+        setMessage("You've won, lucker!");
     }
     drawTable(field);
 }
@@ -141,7 +164,12 @@ function leftClickedCell(el, field){
 function rightClickedCell(el, field){
     var x = parseInt(el.getAttribute('data-x'));
     var y = parseInt(el.getAttribute('data-y'));
-    field.toggleFlag(x, y);
+    var wasEnabled = field.toggleFlag(x, y);
+    if (wasEnabled){
+        setMessage("And you're really sure?");
+    } else {
+        setMessage("What a coward...");
+    }
     drawTable(field);
 }
 
@@ -181,8 +209,15 @@ function startGame(){
     var level = generateLevel(sideSize, mineCount);    
     var field = Field(level);
     //field.uncoverAll();
+    setMessage("Do you think you're ready for this?");
     drawTable(field);
     isDead = false;
+    hasWon = false;
+}
+
+function setMessage(text){
+    var p = document.getElementById("message");
+    p.innerHTML = '"' + text + '"';
 }
 
 startGame();
@@ -190,7 +225,5 @@ startGame();
 
 /*
  * TODO
- *  * winning
- *  * grey background for TDs
  *  * show all when dead
  */
