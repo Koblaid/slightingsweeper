@@ -26,7 +26,7 @@ function Level(levelText){
     };
 }
 
-EMPTY_CELL_CHAR = '\u25A2';
+EMPTY_CELL_CHAR = '';
 FLAG_CHAR = '\u2690';
 MINE_CHAR = '\u2620';
 
@@ -59,8 +59,25 @@ function Field(level){
             for(var y=0;y<level.size;y++){
                 tbody += '<tr>';
                 for(var x=0;x<level.size;x++){
-                    var value = field[y][x] === 0 ? '' : field[y][x];
-                    tbody += '<td data-x="'+x+'" data-y="'+y+'">' + value + '</td>';
+                    var value = field[y][x];
+                    var cls = value === '' ? 'bg-silver' : 'bg-white';
+                    value = value === 0 ? '' : value;
+                    if (value === 1){
+                        cls += ' fg-lightblue';
+                    } else if (value === 2){
+                        cls += ' fg-green';
+                    } else if (value === 3){
+                        cls += ' fg-red';
+                    } else if (value === 4){
+                        cls += ' fg-darkblue';
+                    } else if (value === 5){
+                        cls += ' fg-darkred';
+                    }
+                    if (value === MINE_CHAR){
+                        cls += ' skull';
+                    }
+                    var fg = field[y][x] === EMPTY_CELL_CHAR ? 'silver' : 'white';
+                    tbody += '<td class="'+cls+'" data-x="'+x+'" data-y="'+y+'">' + value + '</td>';
                 }
                 tbody += '</tr>';
             }
