@@ -26,7 +26,7 @@ function Level(levelText){
     };
 }
 
-EMPTY_CELL_CHAR = '';
+EMPTY_CELL_CHAR = 'E';
 FLAG_CHAR = '\u2690';
 MINE_CHAR = '\u2620';
 
@@ -60,8 +60,8 @@ function Field(level){
                 tbody += '<tr>';
                 for(var x=0;x<level.size;x++){
                     var value = field[y][x];
-                    var cls = value === '' ? 'bg-grey' : 'bg-white';
-                    value = value === 0 ? '' : value;
+                    var cls = value === EMPTY_CELL_CHAR ? 'bg-grey' : 'bg-white';
+                    value = value === 0 || value === EMPTY_CELL_CHAR ? '' : value;
                     if (value === 1){
                         cls += ' fg-lightblue';
                     } else if (value === 2){
